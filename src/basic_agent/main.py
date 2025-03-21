@@ -15,9 +15,25 @@ def run():
     """
     Run the crew.
     """
-    inputs = {
-        'topic': 'AI LLMs'
-    }
+
+    # Custom change to allow the Veritai launchpad to pass inputs to the crew.
+    # TODO: submit a PR to crewai to allow their cli run commmand to accept inputs.
+
+    # Original code:
+    # inputs = {
+    #     'topic': 'AI LLMs'
+    # }
+
+    # Custom code start
+    import os
+    import json
+    CREW_INPUT_JSON = os.getenv("CREW_INPUT_JSON")
+    inputs = {}
+    if CREW_INPUT_JSON:
+        with open(CREW_INPUT_JSON, "r") as file:
+            inputs = json.load(file)
+    # Custom code end
+
     BasicAgent().crew().kickoff(inputs=inputs)
 
 
